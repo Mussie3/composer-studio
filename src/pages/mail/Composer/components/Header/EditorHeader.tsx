@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Monitor, Smartphone, Undo2, Redo2, Send, Save, FileCode } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import HtmlSourceModal from '../../modals/HtmlSourceModal'
+import SendScheduleModal from '../../modals/SendScheduleModal'
 import {
   selectCanRedo,
   selectCanUndo,
@@ -15,16 +17,24 @@ import { cx } from '@shared/utils/cx'
 type Props = {
   onSave: () => void
   onExit: () => void
+  mailId: string | null
 }
 
-export default function EditorHeader({ onSave, onExit }: Props) {
+export default function EditorHeader({ onSave, onExit, mailId }: Props) {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const title = useAppSelector(selectMailTitle)
   const viewMode = useAppSelector(selectViewMode)
   const canUndo = useAppSelector(selectCanUndo)
   const canRedo = useAppSelector(selectCanRedo)
   const isDirty = useAppSelector(selectIsDirty)
   const [htmlOpen, setHtmlOpen] = useState(false)
+  const [sendOpen, setSendOpen] = useState(false)
+
+  const onSent = () => {
+    setSendOpen(false)
+    if (mailId) navigate(`/mail/${mailId}`)
+  }
 
   return (
     <header className="h-14 border-b border-canvas-border bg-canvas-panel flex items-center justify-between px-4">
@@ -87,11 +97,23 @@ export default function EditorHeader({ onSave, onExit }: Props) {
         <button className="btn-outline" onClick={onSave}>
           <Save size={14} /> Save
         </button>
-        <button className="btn-primary" disabled>
+        <button
+          className="btn-primary"
+          onClick={() => setSendOpen(true)}
+          disabled={!mailId}
+          title={mailId ? 'Send or schedule this email' : 'Save the email first'}
+        >
           <Send size={14} /> Send
         </button>
       </div>
+
       <HtmlSourceModal open={htmlOpen} onClose={() => setHtmlOpen(false)} />
+      <SendScheduleModal
+        open={sendOpen}
+        onClose={() => setSendOpen(false)}
+        mailId={mailId}
+        onSent={onSent}
+      />
     </header>
   )
 }

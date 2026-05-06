@@ -68,6 +68,27 @@ function* sendSaga(action: PayloadAction<{ id: string; scheduledAt?: string | nu
   }
 }
 
+function* submitForSendSaga(
+  action: PayloadAction<{ id: string; patch: Partial<Mail>; scheduledAt: string | null }>,
+) {
+  try {
+    const updated: Mail = yield call(
+      mailRepository.update,
+      action.payload.id,
+      action.payload.patch,
+    )
+    yield put(mailActions.updateSuccess(updated))
+    const sent: Mail = yield call(
+      mailRepository.send,
+      action.payload.id,
+      action.payload.scheduledAt,
+    )
+    yield put(mailActions.sendSuccess(sent))
+  } catch (err: unknown) {
+    yield put(mailActions.sendFailure((err as Error).message))
+  }
+}
+
 function* fetchSenderSaga() {
   const profile: SenderProfile = yield call(mailRepository.getSender)
   yield put(mailActions.fetchSenderSuccess(profile))
@@ -95,6 +116,7 @@ export function* mailSaga() {
   yield takeEvery(mailActions.updateRequest.type, updateSaga)
   yield takeEvery(mailActions.deleteRequest.type, deleteSaga)
   yield takeEvery(mailActions.sendRequest.type, sendSaga)
+  yield takeEvery(mailActions.submitForSendRequest.type, submitForSendSaga)
   yield takeLatest(mailActions.fetchSenderRequest.type, fetchSenderSaga)
   yield takeEvery(mailActions.saveSenderRequest.type, saveSenderSaga)
   yield takeLatest(mailActions.fetchBusinessRequest.type, fetchBusinessSaga)

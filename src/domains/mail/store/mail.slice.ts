@@ -110,6 +110,18 @@ export const mailSlice = createSlice({
       state.error = action.payload
     },
 
+    submitForSendRequest(
+      state,
+      _action: PayloadAction<{
+        id: string
+        patch: Partial<Mail>
+        scheduledAt: string | null
+      }>,
+    ) {
+      state.isSending = true
+      state.error = null
+    },
+
     fetchSenderRequest(_state) {},
     fetchSenderSuccess(state, action: PayloadAction<SenderProfile>) {
       state.sender = action.payload
