@@ -1,5 +1,4 @@
 import { ArrowLeft, Monitor, Smartphone, Undo2, Redo2, Send, Save } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import {
   selectCanRedo,
@@ -11,9 +10,13 @@ import {
 import { composerActions } from '@domains/mail/store/composer/composer.slice'
 import { cx } from '@shared/utils/cx'
 
-export default function EditorHeader() {
+type Props = {
+  onSave: () => void
+  onExit: () => void
+}
+
+export default function EditorHeader({ onSave, onExit }: Props) {
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const title = useAppSelector(selectMailTitle)
   const viewMode = useAppSelector(selectViewMode)
   const canUndo = useAppSelector(selectCanUndo)
@@ -23,7 +26,7 @@ export default function EditorHeader() {
   return (
     <header className="h-14 border-b border-canvas-border bg-canvas-panel flex items-center justify-between px-4">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate('/mail')} className="btn-ghost px-2" title="Back">
+        <button onClick={onExit} className="btn-ghost px-2" title="Back">
           <ArrowLeft size={16} />
         </button>
         <input
@@ -75,7 +78,7 @@ export default function EditorHeader() {
           </button>
         </div>
 
-        <button className="btn-outline" onClick={() => dispatch(composerActions.markSaved())}>
+        <button className="btn-outline" onClick={onSave}>
           <Save size={14} /> Save
         </button>
         <button className="btn-primary" disabled>

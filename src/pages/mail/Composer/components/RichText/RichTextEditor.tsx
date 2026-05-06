@@ -1,6 +1,5 @@
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Link } from '@tiptap/extension-link'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
@@ -19,7 +18,6 @@ export default function RichTextEditor({ html, onChange, autoFocus, className }:
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       TextStyle,
       Color,
-      Link.configure({ openOnClick: false }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     content: html,
