@@ -110,11 +110,22 @@ export const mailSlice = createSlice({
       state.error = action.payload
     },
 
-    updateSender(state, action: PayloadAction<Partial<SenderProfile>>) {
-      Object.assign(state.sender, action.payload)
+    fetchSenderRequest(_state) {},
+    fetchSenderSuccess(state, action: PayloadAction<SenderProfile>) {
+      state.sender = action.payload
     },
-    updateBusiness(state, action: PayloadAction<Partial<BusinessProfile>>) {
-      Object.assign(state.business, action.payload)
+    saveSenderRequest(_state, _action: PayloadAction<SenderProfile>) {},
+    saveSenderSuccess(state, action: PayloadAction<SenderProfile>) {
+      state.sender = action.payload
+    },
+
+    fetchBusinessRequest(_state) {},
+    fetchBusinessSuccess(state, action: PayloadAction<BusinessProfile>) {
+      state.business = action.payload
+    },
+    saveBusinessRequest(_state, _action: PayloadAction<BusinessProfile>) {},
+    saveBusinessSuccess(state, action: PayloadAction<BusinessProfile>) {
+      state.business = action.payload
     },
   },
 })

@@ -5,6 +5,8 @@ import ComposerPage from '@pages/mail/Composer/ComposerPage'
 import MailListPage from '@pages/mail/List/MailListPage'
 import NewMailPage from '@pages/mail/Create/NewMailPage'
 import MailDetailPage from '@pages/mail/Detail/MailDetailPage'
+import SettingsPage from '@pages/mail/Settings/SettingsPage'
+import TemplatesPage from '@pages/mail/Templates/TemplatesPage'
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +21,8 @@ export const router = createBrowserRouter([
       { path: 'mail/:id/preview', element: <PageStub title="Preview" /> },
       { path: 'mail/history', element: <PageStub title="History" description="Sent emails and their performance." /> },
       { path: 'mail/usage', element: <PageStub title="Usage" description="Volume, opens, clicks." /> },
-      { path: 'mail/templates', element: <PageStub title="Templates" description="Reusable starting points." /> },
-      { path: 'mail/settings', element: <PageStub title="Settings" description="Sender identity, business info, footer." /> },
+      { path: 'mail/templates', element: <TemplatesPage /> },
+      { path: 'mail/settings', element: <SettingsPage /> },
       { path: 'compose', element: <ComposerPage /> },
     ],
   },

@@ -1,7 +1,7 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import { mailRepository } from '@domains/mail/repository/mail.repository'
 import { createMail } from '@domains/mail/factories'
-import type { Mail } from '@domains/mail/types'
+import type { BusinessProfile, Mail, SenderProfile } from '@domains/mail/types'
 import { mailActions } from './mail.slice'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
@@ -68,6 +68,26 @@ function* sendSaga(action: PayloadAction<{ id: string; scheduledAt?: string | nu
   }
 }
 
+function* fetchSenderSaga() {
+  const profile: SenderProfile = yield call(mailRepository.getSender)
+  yield put(mailActions.fetchSenderSuccess(profile))
+}
+
+function* saveSenderSaga(action: PayloadAction<SenderProfile>) {
+  const saved: SenderProfile = yield call(mailRepository.updateSender, action.payload)
+  yield put(mailActions.saveSenderSuccess(saved))
+}
+
+function* fetchBusinessSaga() {
+  const profile: BusinessProfile = yield call(mailRepository.getBusiness)
+  yield put(mailActions.fetchBusinessSuccess(profile))
+}
+
+function* saveBusinessSaga(action: PayloadAction<BusinessProfile>) {
+  const saved: BusinessProfile = yield call(mailRepository.updateBusiness, action.payload)
+  yield put(mailActions.saveBusinessSuccess(saved))
+}
+
 export function* mailSaga() {
   yield takeLatest(mailActions.fetchListRequest.type, fetchListSaga)
   yield takeLatest(mailActions.fetchByIdRequest.type, fetchByIdSaga)
@@ -75,4 +95,8 @@ export function* mailSaga() {
   yield takeEvery(mailActions.updateRequest.type, updateSaga)
   yield takeEvery(mailActions.deleteRequest.type, deleteSaga)
   yield takeEvery(mailActions.sendRequest.type, sendSaga)
+  yield takeLatest(mailActions.fetchSenderRequest.type, fetchSenderSaga)
+  yield takeEvery(mailActions.saveSenderRequest.type, saveSenderSaga)
+  yield takeLatest(mailActions.fetchBusinessRequest.type, fetchBusinessSaga)
+  yield takeEvery(mailActions.saveBusinessRequest.type, saveBusinessSaga)
 }
