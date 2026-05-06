@@ -1,5 +1,7 @@
-import { ArrowLeft, Monitor, Smartphone, Undo2, Redo2, Send, Save } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowLeft, Monitor, Smartphone, Undo2, Redo2, Send, Save, FileCode } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
+import HtmlSourceModal from '../../modals/HtmlSourceModal'
 import {
   selectCanRedo,
   selectCanUndo,
@@ -22,6 +24,7 @@ export default function EditorHeader({ onSave, onExit }: Props) {
   const canUndo = useAppSelector(selectCanUndo)
   const canRedo = useAppSelector(selectCanRedo)
   const isDirty = useAppSelector(selectIsDirty)
+  const [htmlOpen, setHtmlOpen] = useState(false)
 
   return (
     <header className="h-14 border-b border-canvas-border bg-canvas-panel flex items-center justify-between px-4">
@@ -78,6 +81,9 @@ export default function EditorHeader({ onSave, onExit }: Props) {
           </button>
         </div>
 
+        <button className="btn-outline" onClick={() => setHtmlOpen(true)} title="View generated HTML">
+          <FileCode size={14} /> HTML
+        </button>
         <button className="btn-outline" onClick={onSave}>
           <Save size={14} /> Save
         </button>
@@ -85,6 +91,7 @@ export default function EditorHeader({ onSave, onExit }: Props) {
           <Send size={14} /> Send
         </button>
       </div>
+      <HtmlSourceModal open={htmlOpen} onClose={() => setHtmlOpen(false)} />
     </header>
   )
 }
