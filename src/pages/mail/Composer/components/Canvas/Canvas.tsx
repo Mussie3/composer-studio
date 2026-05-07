@@ -18,6 +18,8 @@ import { composerActions } from '@domains/mail/store/composer/composer.slice'
 import CanvasBlock from './CanvasBlock'
 import CanvasFooter from './CanvasFooter'
 import EmptyCanvas from './EmptyCanvas'
+import BlockInserter from './BlockInserter'
+import { Fragment } from 'react'
 
 export default function Canvas() {
   const blocks = useAppSelector(selectBlocks)
@@ -62,8 +64,12 @@ export default function Canvas() {
           ) : (
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
               <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-                {blocks.map((block) => (
-                  <CanvasBlock key={block.id} block={block} />
+                <BlockInserter index={0} />
+                {blocks.map((block, idx) => (
+                  <Fragment key={block.id}>
+                    <CanvasBlock block={block} />
+                    <BlockInserter index={idx + 1} />
+                  </Fragment>
                 ))}
               </SortableContext>
             </DndContext>

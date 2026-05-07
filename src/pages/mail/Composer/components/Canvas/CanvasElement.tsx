@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Loader2, Upload } from 'lucide-react'
 import type {
   ButtonElement,
   ComposerElement,
@@ -11,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { composerActions } from '@domains/mail/store/composer/composer.slice'
 import { selectSelection } from '@domains/mail/store/composer/composer.selectors'
 import { cx } from '@shared/utils/cx'
+import { useImageUpload } from '../../hooks/useImageUpload'
 
 type Props = {
   blockId: string
@@ -40,7 +43,9 @@ export default function CanvasElement({ blockId, cellId, element }: Props) {
       )}
     >
       {element.type === 'text' && <TextRenderer element={element} blockId={blockId} cellId={cellId} isSelected={isSelected} />}
-      {element.type === 'image' && <ImageRenderer element={element} />}
+      {element.type === 'image' && (
+        <ImageRenderer element={element} blockId={blockId} cellId={cellId} />
+      )}
       {element.type === 'button' && <ButtonRenderer element={element} />}
       {element.type === 'divider' && <DividerRenderer element={element} />}
       {element.type === 'spacer' && <SpacerRenderer element={element} />}
@@ -86,10 +91,48 @@ function TextRenderer({
   )
 }
 
-function ImageRenderer({ element }: { element: ImageElement }) {
+function ImageRenderer({
+  element,
+  blockId,
+  cellId,
+}: {
+  element: ImageElement
+  blockId: string
+  cellId: string
+}) {
+  const dispatch = useAppDispatch()
+  const [isOver, setIsOver] = useState(false)
+  const { upload, isUploading, error } = useImageUpload((result) =>
+    dispatch(
+      composerActions.updateElement({
+        blockId,
+        cellId,
+        elementId: element.id,
+        patch: { src: result.url, alt: result.name.replace(/\.[^.]+$/, '') } as Partial<ComposerElement>,
+      }),
+    ),
+  )
+
   const align = element.alignment === 'left' ? 'flex-start' : element.alignment === 'right' ? 'flex-end' : 'center'
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsOver(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) upload(file)
+  }
+
   return (
     <div
+      onDragOver={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsOver(true)
+      }}
+      onDragLeave={() => setIsOver(false)}
+      onDrop={onDrop}
+      className="relative"
       style={{
         display: 'flex',
         justifyContent: align,
@@ -104,6 +147,26 @@ function ImageRenderer({ element }: { element: ImageElement }) {
         alt={element.alt}
         style={{ width: `${element.widthPct}%`, maxWidth: '100%', display: 'block' }}
       />
+      {(isOver || isUploading) && (
+        <div className="absolute inset-2 rounded-lg border-2 border-dashed border-brand-400 bg-brand-50/90 backdrop-blur-sm flex flex-col items-center justify-center text-brand-700 pointer-events-none">
+          {isUploading ? (
+            <>
+              <Loader2 size={20} className="animate-spin mb-1" />
+              <span className="text-xs font-medium">Uploading…</span>
+            </>
+          ) : (
+            <>
+              <Upload size={20} className="mb-1" />
+              <span className="text-xs font-medium">Drop image to replace</span>
+            </>
+          )}
+        </div>
+      )}
+      {error && (
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[11px] text-red-600 bg-white px-2 py-0.5 rounded shadow-soft">
+          {error}
+        </div>
+      )}
     </div>
   )
 }

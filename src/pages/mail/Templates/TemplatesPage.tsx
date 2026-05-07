@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Eye, X, Sparkles, FileText, Newspaper, Megaphone, FilePlus2 } from 'lucide-react'
+import {
+  ArrowRight,
+  Eye,
+  X,
+  Sparkles,
+  FileText,
+  Newspaper,
+  Megaphone,
+  FilePlus2,
+  Sun,
+  Receipt,
+  Moon,
+} from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { mailActions } from '@domains/mail/store/mail.slice'
 import { selectMails } from '@domains/mail/store/mail.selectors'
@@ -17,6 +29,9 @@ const TEMPLATE_THEME: Record<
   announcement: { tile: 'tile-image', icon: Megaphone, tag: 'Marketing' },
   newsletter: { tile: 'tile-text', icon: Newspaper, tag: 'Editorial' },
   'product-update': { tile: 'tile-button', icon: FileText, tag: 'Product' },
+  'soft-launch': { tile: 'tile-button', icon: Sun, tag: 'Light' },
+  'minimal-receipt': { tile: 'tile-divider', icon: Receipt, tag: 'Transactional' },
+  'bold-onboarding': { tile: 'tile-text', icon: Moon, tag: 'Dark' },
 }
 
 export default function TemplatesPage() {

@@ -172,10 +172,10 @@ scheduled time passes.
 - [x] Settings (sender, business profile)
 - [x] Usage stats page
 - [x] History timeline
-- [ ] HTML import (round-trip back into the document model)
-- [ ] Image upload UI in the canvas (the API mock exists)
-- [ ] Floating block-add menu between blocks
-- [ ] Light theme variants for templates
+- [x] HTML import (round-trip back into the document model)
+- [x] Image upload UI in the canvas (file picker in property panel + drag-drop on the canvas image)
+- [x] Floating block-add menu between blocks
+- [x] Template variants — light, dark, and transactional themes
 
 ## License
 

@@ -95,6 +95,11 @@ export const composerSlice = createSlice({
       state.document = createSeedDocument()
       state.selection = null
     },
+    replaceDocument(state, action: PayloadAction<ComposerDocument>) {
+      pushHistory(state)
+      state.document = action.payload
+      state.selection = null
+    },
     setMailTitle(state, action: PayloadAction<string>) {
       state.mailTitle = action.payload
       state.isDirty = true

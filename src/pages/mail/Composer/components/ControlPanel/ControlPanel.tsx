@@ -1,3 +1,4 @@
+import { Upload, Loader2 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import {
   selectSelectedNode,
@@ -13,6 +14,7 @@ import type {
   TextElement,
 } from '@domains/mail/types'
 import { Spec, ColorInput, NumberInput, TextInput, SelectInput, ToggleInput } from '../PropertySpecs/Spec'
+import { useImageUpload } from '../../hooks/useImageUpload'
 
 const layoutOptions: { value: BlockLayout; label: string }[] = [
   { value: 'single', label: '1 column' },
@@ -250,8 +252,11 @@ function TextProps({ element, update }: { element: TextElement; update: (p: Part
 function ImageProps({ element, update }: { element: ImageElement; update: (p: Partial<ImageElement>) => void }) {
   return (
     <>
-      <Spec label="Image URL">
-        <TextInput value={element.src} onChange={(v) => update({ src: v })} />
+      <Spec label="Source">
+        <ImageSourceInput
+          value={element.src}
+          onChange={(src, alt) => update(alt !== undefined ? { src, alt } : { src })}
+        />
       </Spec>
       <Spec label="Alt text">
         <TextInput value={element.alt} onChange={(v) => update({ alt: v })} />
@@ -266,6 +271,44 @@ function ImageProps({ element, update }: { element: ImageElement; update: (p: Pa
         <NumberInput value={element.widthPct} onChange={(v) => update({ widthPct: v })} min={10} max={100} suffix="%" />
       </Spec>
     </>
+  )
+}
+
+function ImageSourceInput({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (src: string, alt?: string) => void
+}) {
+  const { upload, isUploading, error } = useImageUpload((result) =>
+    onChange(result.url, result.name.replace(/\.[^.]+$/, '')),
+  )
+  return (
+    <div className="space-y-2">
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="https://…"
+        className="input"
+      />
+      <label className="btn-outline w-full justify-center cursor-pointer">
+        {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+        {isUploading ? 'Uploading…' : 'Upload image'}
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          disabled={isUploading}
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (file) upload(file)
+            e.target.value = ''
+          }}
+        />
+      </label>
+      {error && <div className="text-xs text-red-600">{error}</div>}
+    </div>
   )
 }
 

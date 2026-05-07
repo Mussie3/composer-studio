@@ -9,11 +9,13 @@ import {
   Send,
   Save,
   FileCode,
+  FileUp,
   Cloud,
   CloudOff,
 } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import HtmlSourceModal from '../../modals/HtmlSourceModal'
+import HtmlImportModal from '../../modals/HtmlImportModal'
 import SendScheduleModal from '../../modals/SendScheduleModal'
 import {
   selectCanRedo,
@@ -40,6 +42,7 @@ export default function EditorHeader({ onSave, onExit, mailId }: Props) {
   const canRedo = useAppSelector(selectCanRedo)
   const isDirty = useAppSelector(selectIsDirty)
   const [htmlOpen, setHtmlOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [sendOpen, setSendOpen] = useState(false)
 
   const onSent = () => {
@@ -118,6 +121,13 @@ export default function EditorHeader({ onSave, onExit, mailId }: Props) {
 
         <button
           className="btn-outline ml-1"
+          onClick={() => setImportOpen(true)}
+          title="Import from HTML"
+        >
+          <FileUp size={14} />
+        </button>
+        <button
+          className="btn-outline"
           onClick={() => setHtmlOpen(true)}
           title="View generated HTML"
         >
@@ -137,6 +147,7 @@ export default function EditorHeader({ onSave, onExit, mailId }: Props) {
       </div>
 
       <HtmlSourceModal open={htmlOpen} onClose={() => setHtmlOpen(false)} />
+      <HtmlImportModal open={importOpen} onClose={() => setImportOpen(false)} />
       <SendScheduleModal
         open={sendOpen}
         onClose={() => setSendOpen(false)}
