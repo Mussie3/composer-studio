@@ -10,6 +10,7 @@ import {
 } from '@domains/mail/store/composer/composer.selectors'
 import type { Recipient } from '@domains/mail/types'
 import { cx } from '@shared/utils/cx'
+import TokenMenu from '@shared/components/TokenMenu'
 
 type Props = {
   open: boolean
@@ -133,7 +134,10 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="label">Subject line</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="label !mb-0">Subject line</label>
+                  <TokenMenu onInsert={(t) => setSubject((s) => s + t)} variant="button" />
+                </div>
                 <input
                   className="input"
                   value={subject}
@@ -142,7 +146,10 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
                 />
               </div>
               <div>
-                <label className="label">Preheader (optional)</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="label !mb-0">Preheader (optional)</label>
+                  <TokenMenu onInsert={(t) => setPreheader((s) => s + t)} variant="button" />
+                </div>
                 <input
                   className="input"
                   value={preheader}
