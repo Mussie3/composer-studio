@@ -40,8 +40,8 @@ export default function NewMailPage() {
         <button onClick={() => navigate(-1)} className="btn-ghost mb-4 -ml-2">
           <ArrowLeft size={14} /> Back
         </button>
-        <h1 className="text-2xl font-semibold mb-1">New email</h1>
-        <p className="text-sm text-gray-500 mb-6">Give it a name, pick a starting point.</p>
+        <h1 className="font-display text-3xl font-bold tracking-display mb-2">New email</h1>
+        <p className="text-sm text-ink-500 mb-7">Give it a name, pick a starting point.</p>
 
         <form onSubmit={onCreate} className="panel p-6 space-y-5">
           <div>
@@ -53,7 +53,7 @@ export default function NewMailPage() {
               className="input"
               placeholder="e.g. April product update"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-ink-500 mt-1">
               Internal only — your subscribers won’t see this.
             </p>
           </div>
@@ -113,12 +113,12 @@ function SeedCard({
         'text-left p-4 border rounded-lg transition',
         selected
           ? 'border-brand-500 bg-brand-50 ring-2 ring-brand-500/20'
-          : 'border-canvas-border bg-canvas-panel hover:border-brand-300',
+          : 'border-ink-100 bg-surface-panel hover:border-brand-300',
       )}
     >
-      <div className={cx('mb-2', selected ? 'text-brand-700' : 'text-gray-500')}>{icon}</div>
-      <div className="font-medium text-gray-900 mb-1">{title}</div>
-      <div className="text-xs text-gray-500 leading-relaxed">{description}</div>
+      <div className={cx('mb-2', selected ? 'text-brand-700' : 'text-ink-500')}>{icon}</div>
+      <div className="font-medium text-ink-900 mb-1">{title}</div>
+      <div className="text-xs text-ink-500 leading-relaxed">{description}</div>
     </button>
   )
 }

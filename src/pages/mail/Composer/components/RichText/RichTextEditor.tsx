@@ -76,7 +76,7 @@ function Toolbar({ editor }: { editor: Editor }) {
   }
   return (
     <div
-      className="sticky top-0 z-10 -mx-1 mb-1 flex items-center gap-0.5 bg-white/95 backdrop-blur border-b border-canvas-border py-1 px-1"
+      className="sticky top-0 z-10 -mx-1 mb-1 flex items-center gap-0.5 bg-white/95 backdrop-blur border-b border-ink-100 py-1 px-1"
     >
       <Btn
         active={editor.isActive('bold')}
@@ -188,7 +188,7 @@ function Btn({
       title={title}
       className={cx(
         'w-7 h-7 grid place-items-center rounded transition',
-        active ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
+        active ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50',
       )}
     >
       {children}
@@ -197,5 +197,5 @@ function Btn({
 }
 
 function Sep() {
-  return <div className="w-px h-4 bg-canvas-border mx-0.5" />
+  return <div className="w-px h-4 bg-ink-100 mx-0.5" />
 }

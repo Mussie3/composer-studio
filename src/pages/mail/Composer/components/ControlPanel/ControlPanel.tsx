@@ -32,18 +32,18 @@ export default function ControlPanel() {
   const dispatch = useAppDispatch()
 
   return (
-    <aside className="w-80 border-l border-canvas-border bg-canvas-panel overflow-auto">
-      <div className="p-4 border-b border-canvas-border">
-        <h2 className="text-sm font-semibold text-gray-900">
+    <aside className="w-80 border-l border-ink-100 bg-surface-panel overflow-auto">
+      <div className="p-4 border-b border-ink-100">
+        <h2 className="text-sm font-semibold text-ink-900">
           {node ? labelForNode(node) : 'Properties'}
         </h2>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-ink-500 mt-1">
           {node ? 'Edit this element’s properties.' : 'Click anything in the canvas to edit it here.'}
         </p>
       </div>
       <div className="p-4">
         {!node && (
-          <div className="text-xs text-gray-400 text-center py-12">
+          <div className="text-xs text-ink-400 text-center py-12">
             Nothing selected.
           </div>
         )}
@@ -115,7 +115,7 @@ export default function ControlPanel() {
         )}
 
         {node?.kind === 'cell' && (
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-ink-500">
             Use the navigation panel on the left to add elements to this column.
           </div>
         )}
@@ -232,7 +232,7 @@ function ElementProps({
 function TextProps({ element, update }: { element: TextElement; update: (p: Partial<TextElement>) => void }) {
   return (
     <>
-      <div className="text-xs text-gray-500 mb-3">
+      <div className="text-xs text-ink-500 mb-3">
         Click into the text on the canvas to edit content. Use the toolbar (coming next) for inline formatting.
       </div>
       <div className="grid grid-cols-2 gap-3">

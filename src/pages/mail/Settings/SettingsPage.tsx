@@ -33,17 +33,17 @@ export default function SettingsPage() {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="max-w-3xl mx-auto px-8 py-8">
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold">Settings</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+      <div className="max-w-3xl mx-auto px-8 py-10">
+        <header className="mb-8">
+          <h1 className="font-display text-3xl font-bold tracking-display mb-2">Settings</h1>
+          <p className="text-sm text-ink-500 max-w-xl">
             Sender identity and business profile. These power the email "From" line and
             the footer of every email you send.
           </p>
         </header>
 
         <SenderForm key={sender.senderEmail} initial={sender} onSave={(v) => dispatch(mailActions.saveSenderRequest(v))} />
-        <div className="h-4" />
+        <div className="h-5" />
         <BusinessForm key={business.businessName} initial={business} onSave={(v) => dispatch(mailActions.saveBusinessRequest(v))} />
       </div>
     </div>
@@ -72,7 +72,7 @@ function SenderForm({
       <header className="mb-4 flex items-center justify-between">
         <div>
           <h2 className="font-semibold">Sender identity</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Shown in the From line of every email.</p>
+          <p className="text-xs text-ink-500 mt-0.5">Shown in the From line of every email.</p>
         </div>
         {form.watch('isVerified') && (
           <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-800">
@@ -131,7 +131,7 @@ function BusinessForm({
     <section className="panel p-6">
       <header className="mb-4">
         <h2 className="font-semibold">Business profile</h2>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-ink-500 mt-0.5">
           Used in email footers (legally required for marketing emails in most regions).
         </p>
       </header>

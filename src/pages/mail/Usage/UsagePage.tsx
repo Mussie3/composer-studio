@@ -101,18 +101,18 @@ export default function UsagePage() {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="max-w-6xl mx-auto px-8 py-8">
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold">Usage</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+      <div className="max-w-6xl mx-auto px-8 py-10">
+        <header className="mb-8">
+          <h1 className="font-display text-3xl font-bold tracking-display mb-2">Usage</h1>
+          <p className="text-sm text-ink-500">
             Volume, opens, and clicks across all sent emails.
           </p>
         </header>
 
         {sent.length === 0 ? (
           <div className="panel p-12 text-center">
-            <AlertCircle size={28} className="mx-auto text-gray-300 mb-2" />
-            <div className="text-sm text-gray-500">
+            <AlertCircle size={28} className="mx-auto text-ink-300 mb-2" />
+            <div className="text-sm text-ink-500">
               Send some emails to see usage stats here.
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function UsagePage() {
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="panel p-5 lg:col-span-2">
                 <h3 className="font-semibold mb-1">Sends per day</h3>
-                <p className="text-xs text-gray-500 mb-4">Last 30 days</p>
+                <p className="text-xs text-ink-500 mb-4">Last 30 days</p>
                 <div className="h-64">
                   <Line
                     options={CHART_OPTIONS}
@@ -172,7 +172,7 @@ export default function UsagePage() {
 
               <div className="panel p-5">
                 <h3 className="font-semibold mb-1">Engagement breakdown</h3>
-                <p className="text-xs text-gray-500 mb-4">All-time totals</p>
+                <p className="text-xs text-ink-500 mb-4">All-time totals</p>
                 <div className="h-64">
                   <Doughnut
                     options={{ ...CHART_OPTIONS, plugins: { legend: { display: true, position: 'bottom' as const } } }}
@@ -192,7 +192,7 @@ export default function UsagePage() {
 
               <div className="panel p-5 lg:col-span-3">
                 <h3 className="font-semibold mb-1">Open and click rate by email</h3>
-                <p className="text-xs text-gray-500 mb-4">Most recent {perEmail.labels.length} sent</p>
+                <p className="text-xs text-ink-500 mb-4">Most recent {perEmail.labels.length} sent</p>
                 <div className="h-72">
                   <Bar
                     options={{
@@ -213,11 +213,11 @@ export default function UsagePage() {
             </section>
 
             <section className="mt-6 panel overflow-hidden">
-              <header className="px-5 py-3 border-b border-canvas-border">
+              <header className="px-5 py-3 border-b border-ink-100">
                 <h3 className="font-semibold">Recent sends</h3>
               </header>
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+                <thead className="bg-ink-50 text-xs uppercase tracking-wide text-ink-500">
                   <tr>
                     <th className="text-left px-4 py-2 font-medium">Title</th>
                     <th className="text-left px-4 py-2 font-medium w-32">Recipients</th>
@@ -228,7 +228,7 @@ export default function UsagePage() {
                 </thead>
                 <tbody>
                   {sent.slice(0, 10).map((mail) => (
-                    <tr key={mail.id} className="border-t border-canvas-border">
+                    <tr key={mail.id} className="border-t border-ink-100">
                       <td className="px-4 py-2 font-medium">{mail.title}</td>
                       <td className="px-4 py-2">{formatNumber(mail.stats?.recipientCount)}</td>
                       <td className="px-4 py-2">
@@ -237,7 +237,7 @@ export default function UsagePage() {
                       <td className="px-4 py-2">
                         {formatPercent(mail.stats?.clickCount ?? 0, mail.stats?.deliveredCount ?? 0)}
                       </td>
-                      <td className="px-4 py-2 text-gray-500">
+                      <td className="px-4 py-2 text-ink-500">
                         {mail.sentAt ? dayjs(mail.sentAt).format('MMM D, YYYY') : '—'}
                       </td>
                     </tr>
@@ -265,11 +265,11 @@ function Stat({
 }) {
   return (
     <div className="panel p-4">
-      <div className="text-xs text-gray-500 uppercase tracking-wide flex items-center gap-1.5 mb-1">
+      <div className="text-xs text-ink-500 uppercase tracking-wide flex items-center gap-1.5 mb-1">
         {icon} {label}
       </div>
       <div className="text-2xl font-semibold">{value}</div>
-      {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
+      {sub && <div className="text-xs text-ink-500 mt-0.5">{sub}</div>}
     </div>
   )
 }

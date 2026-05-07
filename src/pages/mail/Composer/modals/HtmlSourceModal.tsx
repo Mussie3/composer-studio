@@ -44,19 +44,19 @@ export default function HtmlSourceModal({ open, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[80vh] flex flex-col">
-        <header className="px-5 py-3 border-b border-canvas-border flex items-center justify-between">
+        <header className="px-5 py-3 border-b border-ink-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <FileCode size={16} className="text-gray-500" />
+            <FileCode size={16} className="text-ink-500" />
             <h2 className="font-semibold">Generated HTML</h2>
-            <span className="text-xs text-gray-500 ml-2">{html.length.toLocaleString()} chars</span>
+            <span className="text-xs text-ink-500 ml-2">{html.length.toLocaleString()} chars</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex border border-canvas-border rounded-md overflow-hidden">
+            <div className="flex border border-ink-100 rounded-md overflow-hidden">
               <button
                 onClick={() => setTab('source')}
                 className={cx(
                   'px-3 py-1.5 text-sm flex items-center gap-1',
-                  tab === 'source' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
+                  tab === 'source' ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50',
                 )}
               >
                 <FileCode size={14} /> Source
@@ -65,7 +65,7 @@ export default function HtmlSourceModal({ open, onClose }: Props) {
                 onClick={() => setTab('preview')}
                 className={cx(
                   'px-3 py-1.5 text-sm flex items-center gap-1',
-                  tab === 'preview' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
+                  tab === 'preview' ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50',
                 )}
               >
                 <Eye size={14} /> Rendered
@@ -83,9 +83,9 @@ export default function HtmlSourceModal({ open, onClose }: Props) {
           </div>
         </header>
 
-        <div className="flex-1 min-h-0 overflow-hidden bg-gray-50">
+        <div className="flex-1 min-h-0 overflow-hidden bg-ink-50">
           {tab === 'source' ? (
-            <pre className="h-full overflow-auto p-4 text-xs font-mono text-gray-800 whitespace-pre-wrap">
+            <pre className="h-full overflow-auto p-4 text-xs font-mono text-ink-800 whitespace-pre-wrap">
               {html}
             </pre>
           ) : (

@@ -117,9 +117,9 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
         className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="px-5 py-3 border-b border-canvas-border flex items-center justify-between">
+        <header className="px-5 py-3 border-b border-ink-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Send size={16} className="text-gray-500" />
+            <Send size={16} className="text-ink-500" />
             <h2 className="font-semibold">Send email</h2>
           </div>
           <button onClick={onClose} className="btn-ghost px-2" disabled={isSending}>
@@ -129,7 +129,7 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
 
         <div className="flex-1 overflow-auto p-5 space-y-5">
           <section>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-semibold text-ink-500 uppercase tracking-wide mb-2">
               Email details
             </h3>
             <div className="space-y-3">
@@ -157,14 +157,14 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
                   placeholder="Preview snippet shown next to the subject"
                 />
               </div>
-              <div className="text-xs text-gray-500 bg-gray-50 border border-canvas-border rounded p-3">
+              <div className="text-xs text-ink-500 bg-ink-50 border border-ink-100 rounded p-3">
                 <div>
                   <strong>From:</strong> {sender.senderName} &lt;{sender.senderEmail}&gt;
                 </div>
                 <div>
                   <strong>Reply-to:</strong> {sender.replyToEmail}
                 </div>
-                <div className="text-gray-400 mt-1">
+                <div className="text-ink-400 mt-1">
                   Edit these in <a href="/mail/settings" className="underline">Settings</a>.
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
 
           <section>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <h3 className="text-xs font-semibold text-ink-500 uppercase tracking-wide">
                 Recipients
               </h3>
               <label className="text-xs text-brand-600 hover:text-brand-700 cursor-pointer inline-flex items-center gap-1">
@@ -196,13 +196,13 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
               placeholder="One email per line, or upload a CSV with an email column"
             />
             <div className="flex items-center gap-3 mt-2 text-xs">
-              <span className="inline-flex items-center gap-1 text-gray-600">
+              <span className="inline-flex items-center gap-1 text-ink-600">
                 <Users size={12} /> {validCount} valid
               </span>
               {invalidCount > 0 && (
                 <span className="inline-flex items-center gap-1 text-red-600">
                   <AlertTriangle size={12} /> {invalidCount} invalid
-                  <span className="text-gray-500 ml-1 truncate max-w-xs">
+                  <span className="text-ink-500 ml-1 truncate max-w-xs">
                     ({recipients.invalid.slice(0, 3).join(', ')}
                     {invalidCount > 3 ? '…' : ''})
                   </span>
@@ -212,7 +212,7 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
           </section>
 
           <section>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-semibold text-ink-500 uppercase tracking-wide mb-2">
               When
             </h3>
             <div className="grid grid-cols-2 gap-2">
@@ -222,14 +222,14 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
                   'p-3 border rounded-md text-left transition',
                   mode === 'now'
                     ? 'border-brand-500 bg-brand-50'
-                    : 'border-canvas-border hover:border-brand-300',
+                    : 'border-ink-100 hover:border-brand-300',
                 )}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <Send size={14} className={mode === 'now' ? 'text-brand-600' : 'text-gray-400'} />
+                  <Send size={14} className={mode === 'now' ? 'text-brand-600' : 'text-ink-400'} />
                   <span className="font-medium text-sm">Send now</span>
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-ink-500">
                   Deliver immediately to all valid recipients.
                 </div>
               </button>
@@ -239,17 +239,17 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
                   'p-3 border rounded-md text-left transition',
                   mode === 'later'
                     ? 'border-brand-500 bg-brand-50'
-                    : 'border-canvas-border hover:border-brand-300',
+                    : 'border-ink-100 hover:border-brand-300',
                 )}
               >
                 <div className="flex items-center gap-2 mb-1">
                   <CalendarClock
                     size={14}
-                    className={mode === 'later' ? 'text-brand-600' : 'text-gray-400'}
+                    className={mode === 'later' ? 'text-brand-600' : 'text-ink-400'}
                   />
                   <span className="font-medium text-sm">Schedule</span>
                 </div>
-                <div className="text-xs text-gray-500">Choose a future time.</div>
+                <div className="text-xs text-ink-500">Choose a future time.</div>
               </button>
             </div>
             {mode === 'later' && (
@@ -267,8 +267,8 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
           </section>
         </div>
 
-        <footer className="px-5 py-3 border-t border-canvas-border flex items-center justify-between">
-          <div className="text-xs text-gray-500">
+        <footer className="px-5 py-3 border-t border-ink-100 flex items-center justify-between">
+          <div className="text-xs text-ink-500">
             {validCount > 0 && (
               <>Will be {mode === 'now' ? 'sent' : 'scheduled'} to {validCount} recipient{validCount === 1 ? '' : 's'}.</>
             )}

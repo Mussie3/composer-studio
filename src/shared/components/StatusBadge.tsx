@@ -2,7 +2,7 @@ import type { MailStatus } from '@domains/mail/types'
 import { cx } from '@shared/utils/cx'
 
 const STYLES: Record<MailStatus, string> = {
-  draft: 'bg-gray-100 text-gray-700',
+  draft: 'bg-ink-100 text-ink-700',
   scheduled: 'bg-amber-100 text-amber-800',
   sent: 'bg-emerald-100 text-emerald-800',
 }

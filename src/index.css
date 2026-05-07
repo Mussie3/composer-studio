@@ -9,32 +9,113 @@
   body {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: #111827;
-    background: #f6f7fa;
+    color: theme('colors.ink.900');
+    background: theme('colors.surface.DEFAULT');
+    background-image: theme('backgroundImage.app-gradient');
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1, h2, h3, h4 {
+    color: theme('colors.ink.900');
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: theme('colors.brand.200');
+    color: theme('colors.brand.900');
   }
 }
 
 @layer components {
+  /* Buttons */
   .btn {
-    @apply inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition;
+    @apply inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all;
   }
   .btn-primary {
-    @apply btn bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-50;
+    @apply btn text-white;
+    background: linear-gradient(135deg, #6366F1 0%, #5B5FE3 50%, #4948CC 100%);
+    box-shadow: 0 1px 2px rgba(15, 18, 38, 0.12), 0 6px 16px -4px rgba(91, 95, 227, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 1px 2px rgba(15, 18, 38, 0.16), 0 10px 22px -4px rgba(91, 95, 227, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: 0 1px 2px rgba(15, 18, 38, 0.08);
   }
   .btn-ghost {
-    @apply btn text-gray-700 hover:bg-gray-100;
+    @apply btn text-ink-600 hover:bg-ink-100/70;
   }
   .btn-outline {
-    @apply btn border border-canvas-border text-gray-700 hover:bg-gray-50;
+    @apply btn bg-surface-panel text-ink-700 border border-ink-200 hover:border-brand-300 hover:bg-brand-50/40 hover:text-brand-700;
   }
+  .btn-soft {
+    @apply btn bg-brand-50 text-brand-700 hover:bg-brand-100;
+  }
+
+  /* Surfaces */
   .panel {
-    @apply bg-canvas-panel border border-canvas-border rounded-lg;
+    @apply bg-surface-panel border border-ink-100 rounded-2xl shadow-soft;
   }
+  .panel-flat {
+    @apply bg-surface-panel border border-ink-100 rounded-2xl;
+  }
+
+  /* Forms */
   .input {
-    @apply w-full px-3 py-2 rounded-md border border-canvas-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500;
+    @apply w-full px-3.5 py-2.5 rounded-lg border border-ink-200 bg-surface-panel text-sm text-ink-900 placeholder:text-ink-400 transition-all;
+  }
+  .input:focus {
+    @apply outline-none border-brand-400;
+    box-shadow: 0 0 0 4px rgba(91, 95, 227, 0.14);
   }
   .label {
-    @apply block text-xs font-medium text-gray-600 mb-1;
+    @apply block text-xs font-medium text-ink-600 mb-1.5;
+  }
+
+  /* Element tiles (used in NavigationPanel and Templates) */
+  .tile {
+    @apply rounded-xl grid place-items-center text-white shadow-soft;
+  }
+  .tile-text       { background: linear-gradient(135deg, #5B5FE3, #867CEF); }
+  .tile-heading    { background: linear-gradient(135deg, #8A5CFF, #B57DFF); }
+  .tile-paragraph  { background: linear-gradient(135deg, #14B8A6, #2DD4BF); }
+  .tile-image      { background: linear-gradient(135deg, #EC4899, #F472B6); }
+  .tile-button     { background: linear-gradient(135deg, #F97316, #FB923C); }
+  .tile-divider    { background: linear-gradient(135deg, #0EA5E9, #38BDF8); }
+  .tile-spacer     { background: linear-gradient(135deg, #64748B, #94A3B8); }
+  .tile-brand      { background: linear-gradient(135deg, #8A5CFF, #5B5FE3); }
+
+  /* Section divider */
+  .section-title {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-400;
+  }
+
+  /* Layout cards used by element-add panel */
+  .layout-card {
+    @apply border border-ink-200 rounded-xl p-2.5 bg-surface-panel hover:border-brand-300 hover:shadow-soft transition-all cursor-pointer text-xs text-ink-700;
+  }
+  .layout-card-active {
+    @apply border-brand-400 bg-brand-50 shadow-soft;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.ink.200') transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: theme('colors.ink.200');
+    border-radius: 999px;
   }
 }

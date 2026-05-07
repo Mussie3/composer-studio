@@ -1,6 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Monitor, Smartphone, Undo2, Redo2, Send, Save, FileCode } from 'lucide-react'
+import {
+  ArrowLeft,
+  Monitor,
+  Smartphone,
+  Undo2,
+  Redo2,
+  Send,
+  Save,
+  FileCode,
+  Cloud,
+  CloudOff,
+} from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import HtmlSourceModal from '../../modals/HtmlSourceModal'
 import SendScheduleModal from '../../modals/SendScheduleModal'
@@ -37,61 +48,79 @@ export default function EditorHeader({ onSave, onExit, mailId }: Props) {
   }
 
   return (
-    <header className="h-14 border-b border-canvas-border bg-canvas-panel flex items-center justify-between px-4">
+    <header className="h-16 border-b border-ink-100 bg-surface-panel/80 backdrop-blur flex items-center justify-between px-5">
       <div className="flex items-center gap-3">
         <button onClick={onExit} className="btn-ghost px-2" title="Back">
           <ArrowLeft size={16} />
         </button>
-        <input
-          value={title}
-          onChange={(e) => dispatch(composerActions.setMailTitle(e.target.value))}
-          className="font-medium text-gray-900 bg-transparent focus:bg-gray-50 rounded px-2 py-1 outline-none border border-transparent focus:border-canvas-border min-w-64"
-        />
-        <span className={cx('text-xs', isDirty ? 'text-amber-600' : 'text-gray-400')}>
-          {isDirty ? 'Unsaved changes' : 'All changes saved'}
-        </span>
+        <div className="flex flex-col">
+          <input
+            value={title}
+            onChange={(e) => dispatch(composerActions.setMailTitle(e.target.value))}
+            className="font-display font-semibold text-ink-900 text-base tracking-display bg-transparent focus:bg-ink-50 rounded-md px-1.5 py-0.5 outline-none border border-transparent focus:border-brand-300 -ml-1.5 min-w-72"
+          />
+          <span
+            className={cx(
+              'text-[11px] flex items-center gap-1 mt-0.5 ml-0.5',
+              isDirty ? 'text-amber-600' : 'text-ink-400',
+            )}
+          >
+            {isDirty ? <CloudOff size={10} /> : <Cloud size={10} />}
+            {isDirty ? 'Unsaved changes' : 'All changes saved'}
+          </span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => dispatch(composerActions.undo())}
-          disabled={!canUndo}
-          className="btn-ghost disabled:opacity-30"
-          title="Undo"
-        >
-          <Undo2 size={16} />
-        </button>
-        <button
-          onClick={() => dispatch(composerActions.redo())}
-          disabled={!canRedo}
-          className="btn-ghost disabled:opacity-30"
-          title="Redo"
-        >
-          <Redo2 size={16} />
-        </button>
+      <div className="flex items-center gap-1.5">
+        <div className="flex bg-ink-50 rounded-lg p-0.5 mr-1">
+          <button
+            onClick={() => dispatch(composerActions.undo())}
+            disabled={!canUndo}
+            className="w-8 h-8 grid place-items-center rounded-md text-ink-600 hover:bg-white hover:text-ink-900 disabled:opacity-30 disabled:hover:bg-transparent transition"
+            title="Undo (⌘Z)"
+          >
+            <Undo2 size={15} />
+          </button>
+          <button
+            onClick={() => dispatch(composerActions.redo())}
+            disabled={!canRedo}
+            className="w-8 h-8 grid place-items-center rounded-md text-ink-600 hover:bg-white hover:text-ink-900 disabled:opacity-30 disabled:hover:bg-transparent transition"
+            title="Redo (⇧⌘Z)"
+          >
+            <Redo2 size={15} />
+          </button>
+        </div>
 
-        <div className="flex border border-canvas-border rounded-md overflow-hidden mx-2">
+        <div className="flex bg-ink-50 rounded-lg p-0.5">
           <button
             onClick={() => dispatch(composerActions.setViewMode('desktop'))}
             className={cx(
-              'px-3 py-1.5 text-sm flex items-center gap-1',
-              viewMode === 'desktop' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
+              'h-8 px-3 rounded-md text-xs font-medium flex items-center gap-1.5 transition',
+              viewMode === 'desktop'
+                ? 'bg-white text-ink-900 shadow-soft'
+                : 'text-ink-500 hover:text-ink-900',
             )}
           >
-            <Monitor size={14} /> Desktop
+            <Monitor size={13} /> Desktop
           </button>
           <button
             onClick={() => dispatch(composerActions.setViewMode('mobile'))}
             className={cx(
-              'px-3 py-1.5 text-sm flex items-center gap-1',
-              viewMode === 'mobile' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
+              'h-8 px-3 rounded-md text-xs font-medium flex items-center gap-1.5 transition',
+              viewMode === 'mobile'
+                ? 'bg-white text-ink-900 shadow-soft'
+                : 'text-ink-500 hover:text-ink-900',
             )}
           >
-            <Smartphone size={14} /> Mobile
+            <Smartphone size={13} /> Mobile
           </button>
         </div>
 
-        <button className="btn-outline" onClick={() => setHtmlOpen(true)} title="View generated HTML">
+        <button
+          className="btn-outline ml-1"
+          onClick={() => setHtmlOpen(true)}
+          title="View generated HTML"
+        >
           <FileCode size={14} /> HTML
         </button>
         <button className="btn-outline" onClick={onSave}>

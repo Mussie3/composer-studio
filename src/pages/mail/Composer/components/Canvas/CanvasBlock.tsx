@@ -69,7 +69,7 @@ export default function CanvasBlock({ block }: Props) {
         <button
           {...attributes}
           {...listeners}
-          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-canvas-border text-gray-500 hover:text-gray-800 cursor-grab"
+          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-ink-100 text-ink-500 hover:text-ink-800 cursor-grab"
           title="Drag to reorder"
         >
           <GripVertical size={14} />
@@ -81,7 +81,7 @@ export default function CanvasBlock({ block }: Props) {
             e.stopPropagation()
             dispatch(composerActions.duplicateBlock({ blockId: block.id }))
           }}
-          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-canvas-border text-gray-500 hover:text-gray-800"
+          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-ink-100 text-ink-500 hover:text-ink-800"
           title="Duplicate"
         >
           <Copy size={14} />
@@ -91,7 +91,7 @@ export default function CanvasBlock({ block }: Props) {
             e.stopPropagation()
             dispatch(composerActions.removeBlock({ blockId: block.id }))
           }}
-          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-canvas-border text-gray-500 hover:text-red-600"
+          className="w-7 h-7 grid place-items-center rounded bg-white shadow border border-ink-100 text-ink-500 hover:text-red-600"
           title="Delete"
         >
           <Trash2 size={14} />
@@ -111,7 +111,7 @@ export default function CanvasBlock({ block }: Props) {
               }}
             >
               {cell.elements.length === 0 ? (
-                <div className="text-xs text-gray-400 border border-dashed border-canvas-border rounded p-6 text-center">
+                <div className="text-xs text-ink-400 border border-dashed border-ink-100 rounded p-6 text-center">
                   Empty column · select to add elements
                 </div>
               ) : (

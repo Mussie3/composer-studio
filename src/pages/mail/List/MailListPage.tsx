@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Plus, Search, Mail as MailIcon, Trash2 } from 'lucide-react'
+import {
+  Plus,
+  Search,
+  Mail as MailIcon,
+  Trash2,
+  PenLine,
+  CalendarClock,
+  Send,
+  Inbox,
+} from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
 import { mailActions } from '@domains/mail/store/mail.slice'
 import { selectIsLoadingList, selectMails } from '@domains/mail/store/mail.selectors'
@@ -9,11 +18,17 @@ import { formatPercent, formatRelative } from '@shared/utils/format'
 import { cx } from '@shared/utils/cx'
 import type { Mail, MailStatus } from '@domains/mail/types'
 
-const FILTERS: { value: 'all' | MailStatus; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'draft', label: 'Drafts' },
-  { value: 'scheduled', label: 'Scheduled' },
-  { value: 'sent', label: 'Sent' },
+type FilterValue = 'all' | MailStatus
+
+const FILTERS: {
+  value: FilterValue
+  label: string
+  icon: React.ComponentType<{ size?: number; className?: string }>
+}[] = [
+  { value: 'all', label: 'All', icon: Inbox },
+  { value: 'draft', label: 'Drafts', icon: PenLine },
+  { value: 'scheduled', label: 'Scheduled', icon: CalendarClock },
+  { value: 'sent', label: 'Sent', icon: Send },
 ]
 
 export default function MailListPage() {
@@ -21,7 +36,7 @@ export default function MailListPage() {
   const navigate = useNavigate()
   const mails = useAppSelector(selectMails)
   const isLoading = useAppSelector(selectIsLoadingList)
-  const [filter, setFilter] = useState<'all' | MailStatus>('all')
+  const [filter, setFilter] = useState<FilterValue>('all')
   const [query, setQuery] = useState('')
 
   useEffect(() => {
@@ -46,12 +61,12 @@ export default function MailListPage() {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="max-w-6xl mx-auto px-8 py-8">
-        <header className="flex items-center justify-between mb-6">
+      <div className="max-w-6xl mx-auto px-8 py-10">
+        <header className="flex items-end justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold">Emails</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
-              Drafts, scheduled, and sent. {mails.length} total.
+            <h1 className="font-display text-3xl font-bold tracking-display">Emails</h1>
+            <p className="text-sm text-ink-500 mt-1">
+              Drafts, scheduled, and sent campaigns. <span className="text-ink-700 font-medium">{mails.length}</span> total.
             </p>
           </div>
           <Link to="/mail/new" className="btn-primary">
@@ -60,61 +75,72 @@ export default function MailListPage() {
           </Link>
         </header>
 
-        <div className="flex items-center gap-2 mb-4">
-          <div className="flex border border-canvas-border rounded-md overflow-hidden bg-canvas-panel">
-            {FILTERS.map((f) => (
-              <button
-                key={f.value}
-                onClick={() => setFilter(f.value)}
-                className={cx(
-                  'px-3 py-1.5 text-sm transition',
-                  filter === f.value ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50',
-                )}
-              >
-                {f.label}
-                <span className="ml-2 text-xs text-gray-400">
-                  {f.value === 'all' ? counts.all : counts[f.value]}
-                </span>
-              </button>
-            ))}
-          </div>
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => setFilter(f.value)}
+              className={cx(
+                'panel p-4 text-left transition-all hover:shadow-card hover:-translate-y-0.5',
+                filter === f.value && 'border-brand-300 ring-2 ring-brand-200',
+              )}
+            >
+              <div className="flex items-center gap-2 text-xs text-ink-500 mb-2">
+                <f.icon size={12} />
+                <span className="uppercase tracking-wider font-semibold">{f.label}</span>
+              </div>
+              <div className="font-display text-2xl font-bold text-ink-900">
+                {f.value === 'all' ? counts.all : counts[f.value]}
+              </div>
+            </button>
+          ))}
+        </section>
 
-          <div className="relative ml-auto">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <div className="flex items-center gap-3 mb-4">
+          <div className="relative flex-1 max-w-sm">
+            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by title..."
-              className="input pl-9 w-72"
+              placeholder="Search emails by title..."
+              className="input pl-10"
             />
+          </div>
+          <div className="text-xs text-ink-500">
+            {visible.length} {visible.length === 1 ? 'result' : 'results'}
           </div>
         </div>
 
         <div className="panel overflow-hidden">
           {isLoading && mails.length === 0 ? (
-            <div className="p-12 text-center text-sm text-gray-500">Loading…</div>
+            <div className="p-16 text-center text-sm text-ink-500">Loading…</div>
           ) : visible.length === 0 ? (
-            <div className="p-12 text-center">
-              <MailIcon size={32} className="mx-auto text-gray-300 mb-2" />
-              <div className="text-sm text-gray-500">
-                {query ? 'No emails match your search.' : 'No emails yet.'}
+            <div className="p-16 text-center">
+              <div className="mx-auto mb-4 w-16 h-16 rounded-2xl tile tile-brand grid place-items-center">
+                <MailIcon size={26} />
+              </div>
+              <div className="font-display text-lg font-semibold mb-1">
+                {query ? 'No emails match your search' : 'No emails yet'}
+              </div>
+              <div className="text-sm text-ink-500 mb-5">
+                {query ? 'Try a different query.' : 'Start your first campaign in seconds.'}
               </div>
               {!query && (
-                <button onClick={() => navigate('/mail/new')} className="btn-primary mt-4">
+                <button onClick={() => navigate('/mail/new')} className="btn-primary">
                   <Plus size={14} /> Create your first email
                 </button>
               )}
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
-                <tr>
-                  <th className="text-left px-4 py-3 font-medium">Title</th>
-                  <th className="text-left px-4 py-3 font-medium w-28">Status</th>
-                  <th className="text-left px-4 py-3 font-medium w-32">Recipients</th>
-                  <th className="text-left px-4 py-3 font-medium w-28">Open rate</th>
-                  <th className="text-left px-4 py-3 font-medium w-36">Updated</th>
-                  <th className="text-right px-4 py-3 font-medium w-12" />
+              <thead className="bg-surface-inset border-b border-ink-100">
+                <tr className="text-[11px] uppercase tracking-wider text-ink-500">
+                  <th className="text-left px-5 py-3 font-semibold">Title</th>
+                  <th className="text-left px-4 py-3 font-semibold w-28">Status</th>
+                  <th className="text-left px-4 py-3 font-semibold w-28">Recipients</th>
+                  <th className="text-left px-4 py-3 font-semibold w-28">Open rate</th>
+                  <th className="text-left px-4 py-3 font-semibold w-36">Updated</th>
+                  <th className="text-right px-4 py-3 w-12" />
                 </tr>
               </thead>
               <tbody>
@@ -142,25 +168,29 @@ function MailRow({ mail }: { mail: Mail }) {
   const target = mail.status === 'draft' ? `/mail/${mail.id}/edit` : `/mail/${mail.id}`
   return (
     <tr
-      className="border-t border-canvas-border hover:bg-gray-50 cursor-pointer"
+      className="border-t border-ink-100 hover:bg-brand-50/40 cursor-pointer transition-colors group"
       onClick={() => navigate(target)}
     >
-      <td className="px-4 py-3">
-        <div className="font-medium text-gray-900">{mail.title}</div>
-        {mail.subject && <div className="text-xs text-gray-500 truncate max-w-md">{mail.subject}</div>}
+      <td className="px-5 py-3.5">
+        <div className="font-medium text-ink-900 group-hover:text-brand-700 transition-colors">
+          {mail.title}
+        </div>
+        {mail.subject && (
+          <div className="text-xs text-ink-500 truncate max-w-md mt-0.5">{mail.subject}</div>
+        )}
       </td>
-      <td className="px-4 py-3">
+      <td className="px-4 py-3.5">
         <StatusBadge status={mail.status} />
       </td>
-      <td className="px-4 py-3 text-gray-700">{mail.stats?.recipientCount ?? '—'}</td>
-      <td className="px-4 py-3 text-gray-700">
+      <td className="px-4 py-3.5 text-ink-700">{mail.stats?.recipientCount ?? '—'}</td>
+      <td className="px-4 py-3.5 text-ink-700">
         {mail.stats ? formatPercent(mail.stats.openCount, mail.stats.deliveredCount) : '—'}
       </td>
-      <td className="px-4 py-3 text-gray-500">{formatRelative(mail.updatedAt)}</td>
-      <td className="px-4 py-3 text-right">
+      <td className="px-4 py-3.5 text-ink-500">{formatRelative(mail.updatedAt)}</td>
+      <td className="px-4 py-3.5 text-right">
         <button
           onClick={onDelete}
-          className="text-gray-400 hover:text-red-600 p-1 rounded"
+          className="text-ink-300 hover:text-red-600 p-1.5 rounded-md hover:bg-red-50 transition-colors"
           title="Delete"
         >
           <Trash2 size={14} />

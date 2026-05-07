@@ -22,7 +22,7 @@ export function ColorInput({
         type="color"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-8 h-8 rounded border border-canvas-border cursor-pointer"
+        className="w-8 h-8 rounded border border-ink-100 cursor-pointer"
       />
       <input
         value={value}
@@ -56,7 +56,7 @@ export function NumberInput({
         onChange={(e) => onChange(Number(e.target.value))}
         className="input"
       />
-      {suffix && <span className="text-xs text-gray-500">{suffix}</span>}
+      {suffix && <span className="text-xs text-ink-500">{suffix}</span>}
     </div>
   )
 }
@@ -114,7 +114,7 @@ export function ToggleInput({
   label: string
 }) {
   return (
-    <label className="flex items-center gap-2 text-sm text-gray-700">
+    <label className="flex items-center gap-2 text-sm text-ink-700">
       <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} />
       {label}
     </label>
