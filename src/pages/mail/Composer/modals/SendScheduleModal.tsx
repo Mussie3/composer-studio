@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { CalendarClock, Send, Upload, X, Users, AlertTriangle, Check } from 'lucide-react'
 import Papa from 'papaparse'
 import { useAppDispatch, useAppSelector } from '@app/hooks'
@@ -108,13 +109,13 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
 
   if (!open) return null
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 backdrop-blur-sm p-6"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+        className="bg-surface-panel rounded-2xl shadow-card w-full max-w-2xl max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="px-5 py-3 border-b border-ink-100 flex items-center justify-between">
@@ -294,7 +295,8 @@ export default function SendScheduleModal({ open, onClose, mailId, onSent }: Pro
           </div>
         </footer>
       </div>
-    </div>
+    </div>,
+    window.document.body,
   )
 }
 

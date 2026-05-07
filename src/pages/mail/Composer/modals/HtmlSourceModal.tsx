@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Copy, Download, Eye, X, FileCode } from 'lucide-react'
 import { useAppSelector } from '@app/hooks'
 import { selectDocument, selectMailTitle } from '@domains/mail/store/composer/composer.selectors'
@@ -41,9 +42,15 @@ export default function HtmlSourceModal({ open, onClose }: Props) {
     URL.revokeObjectURL(url)
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[80vh] flex flex-col">
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 backdrop-blur-sm p-6"
+      onClick={onClose}
+    >
+      <div
+        className="bg-surface-panel rounded-2xl shadow-card w-full max-w-5xl h-[80vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         <header className="px-5 py-3 border-b border-ink-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FileCode size={16} className="text-ink-500" />
@@ -98,7 +105,8 @@ export default function HtmlSourceModal({ open, onClose }: Props) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

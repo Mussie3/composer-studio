@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AlertTriangle, FileUp, Upload, X } from 'lucide-react'
 import { useAppDispatch } from '@app/hooks'
 import { composerActions } from '@domains/mail/store/composer/composer.slice'
@@ -41,7 +42,7 @@ export default function HtmlImportModal({ open, onClose }: Props) {
     onClose()
   }
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 backdrop-blur-sm p-6"
       onClick={onClose}
@@ -142,6 +143,7 @@ export default function HtmlImportModal({ open, onClose }: Props) {
           </button>
         </footer>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
