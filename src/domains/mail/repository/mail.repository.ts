@@ -4,8 +4,15 @@ import type {
   Mail,
   SenderProfile,
 } from '@domains/mail/types'
+import type { MailRepository } from './types'
+import { supabaseRepository } from './supabase.repository'
 
-export const mailRepository = {
+/**
+ * The original in-browser backend: axios -> axios-mock-adapter -> localStorage.
+ * Kept as-is so the project still runs end to end with no Supabase project and
+ * no network, which is what makes the demo a single `npm run dev`.
+ */
+export const restRepository: MailRepository = {
   list: async (): Promise<Mail[]> => {
     const res = await apiClient.get<Mail[]>('/mails')
     return res.data
@@ -59,3 +66,16 @@ export const mailRepository = {
     return res.data
   },
 }
+
+/**
+ * Which backend the app talks to. Set VITE_BACKEND=supabase (alongside
+ * VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY) to run against the real one.
+ *
+ * Nothing downstream of this line knows the difference: the sagas, slices and
+ * components all speak to the MailRepository interface.
+ */
+export const backend: 'mock' | 'supabase' =
+  import.meta.env.VITE_BACKEND === 'supabase' ? 'supabase' : 'mock'
+
+export const mailRepository: MailRepository =
+  backend === 'supabase' ? supabaseRepository : restRepository
