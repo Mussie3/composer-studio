@@ -6,6 +6,7 @@ import type {
 } from '@domains/mail/types'
 import type { MailRepository } from './types'
 import { supabaseRepository } from './supabase.repository'
+import { isSupabaseConfigured } from '@api/supabase'
 
 /**
  * The original in-browser backend: axios -> axios-mock-adapter -> localStorage.
@@ -75,7 +76,7 @@ export const restRepository: MailRepository = {
  * components all speak to the MailRepository interface.
  */
 export const backend: 'mock' | 'supabase' =
-  import.meta.env.VITE_BACKEND === 'supabase' ? 'supabase' : 'mock'
+  import.meta.env.VITE_BACKEND === 'supabase' && isSupabaseConfigured ? 'supabase' : 'mock'
 
 export const mailRepository: MailRepository =
   backend === 'supabase' ? supabaseRepository : restRepository
